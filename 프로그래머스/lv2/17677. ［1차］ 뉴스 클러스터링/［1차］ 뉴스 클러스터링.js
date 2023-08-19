@@ -41,4 +41,3 @@ function solution(str1, str2) {
     // 자카드 유사도 * 65536의 정수부 출력
     return Math.floor(zacard * 65536);
 }
-// obj2의 value가 2여도 key로만 인식하고 count를 빼니까 중복되는 값이 고려되지 않음
