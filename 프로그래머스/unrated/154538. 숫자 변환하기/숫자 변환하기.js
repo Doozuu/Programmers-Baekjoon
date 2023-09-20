@@ -2,7 +2,6 @@ class Queue {
     queue = [];
     front = 0;
     rear = 0;
-    
     enqueue(value) {
         this.queue[this.rear] = value;
         this.rear++;
@@ -30,7 +29,6 @@ function solution(x, y, n) {
         newVal.map(el => {
             if(el <= y) queue.enqueue([el, count + 1]);
         });
-        // stack.sort((a,b) => b[1] - a[1]);
         visited[val] = 1;
     }
     return -1;
