@@ -16,12 +16,13 @@ function solution(expression) {
         return Math.abs(num_list.reduce((acc,cur) => change(acc,cur,op)));
     }else if(distinct_operator.length === 2){
         let [op1,op2] = distinct_operator;
-        let candidate1 = expression.split(op2).map(el => {
-            return el.split(op1).map(Number).reduce((acc,cur) => change(acc,cur,op1))
-        }).reduce((acc,cur) => change(acc,cur,op2));
-        let candidate2 = expression.split(op1).map(el => {
-            return el.split(op2).map(Number).reduce((acc,cur) => change(acc,cur,op2));
-        }).reduce((acc,cur) => change(acc,cur,op1));
+        function operate(op1,op2){
+            return expression.split(op2).map(el => {
+                return el.split(op1).map(Number).reduce((acc,cur) => change(acc,cur,op1))
+            }).reduce((acc,cur) => change(acc,cur,op2));
+        }
+        let candidate1 = operate(op1,op2);
+        let candidate2 = operate(op2,op1);
         return Math.max(Math.abs(candidate1),Math.abs(candidate2));
     }else{
         let operator_list = ['*+-', '*-+', '+*-', '+-*', '-*+', '-+*'];
