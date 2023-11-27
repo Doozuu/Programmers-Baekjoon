@@ -1,5 +1,8 @@
 const input = require("fs").readFileSync("dev/stdin").toString().split("\n");
 
+// 괄호가 하나도 없는 경우도 균형잡힌 문자열이다.
+// 마지막 .에 도달하면 끝(여기는 체크 안함)
+
 let answer = [];
 
 for (let text of input) {
@@ -29,8 +32,6 @@ for (let text of input) {
         isValid = false;
         break;
       }
-    } else if (text[j] === ".") {
-      break;
     }
     j++;
   }
