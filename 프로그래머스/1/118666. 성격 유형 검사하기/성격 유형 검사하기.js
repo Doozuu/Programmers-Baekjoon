@@ -1,26 +1,18 @@
 function solution(survey, choices) {
-    let answer = '';
-    let obj = {};
-    for(let i=0;i<survey.length;i++){
-        let score = choices[i];
-        if(score < 4){
-            obj[survey[i][0]] = (obj[survey[i][0]] || 0) + Math.abs(score-4);
-        }else{
-            obj[survey[i][1]] = (obj[survey[i][1]] || 0) + Math.abs(score-4);
-        }
-    }
-    function Test(t1,t2){
-        if(!obj[t1] && !obj[t2]){
-            answer += t1;   
-        }else if(!obj[t1] || obj[t1] < obj[t2]){
-            answer += t2;
-        }else{
-            answer += t1;
-        }
-    }
-    Test("R","T");
-    Test("C","F");
-    Test("J","M");
-    Test("A","N");
-    return answer;
+  const map = new Map();
+  const types = ["RT", "CF", "JM", "AN"].map((t) => t.split(""));
+
+  function SetScore(target1, target2, score) {
+    map.set(target1, (map.get(target1) || 0) + Math.abs(score - 4));
+    map.set(target2, map.get(target2) || 0);
+  }
+
+  survey.forEach(([type1, type2], i) => {
+    const score = choices[i];
+    score < 4 ? SetScore(type1, type2, score) : SetScore(type2, type1, score);
+  });
+
+  return types
+    .map(([type1, type2]) => (map.get(type1) < map.get(type2) ? type2 : type1))
+    .join("");
 }
