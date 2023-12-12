@@ -1,45 +1,34 @@
 function solution(users, emoticons) {
-    const salePercent = [10, 20, 30, 40]
-    const cases = []
-    const arr = []
-    const emoLen = emoticons.length
-    const result = [0,0]
-    function saleDFS(depth = 0) {
-        if(depth === emoLen) {
-            cases.push([...arr])
-            return
-        }
-        for(let i = 0 ; i < salePercent.length ; i++) {
-            arr[depth] = salePercent[i]
-            saleDFS(depth+1)
-        }
+  const discountRate = [10, 20, 30, 40];
+  const cases = [];
+  let result = [0, 0];
+
+  function DFS(depth, arr) {
+    if (depth === emoticons.length) return cases.push(arr);
+    for (let i = 0; i < discountRate.length; i++) {
+      DFS(depth + 1, arr.concat(discountRate[i]));
     }
-    saleDFS();
-      cases.forEach((curCase, curCaseIdx) => {
-        let emoticonPlus = 0
-        let sumPrice = 0
-        users.forEach(([buyPercent, buyPlus], userIdx) => {
-            let price = 0
-            let etPlusFlag = false
-            emoticons.every((et, etIdx) => {
-                if(curCase[etIdx] >= buyPercent) {
-                    price += et * (100 - curCase[etIdx]) / 100 
-                }
-                if(price >= buyPlus) {
-                    etPlusFlag = true
-                    return false
-                }
-                return true
-            })
-            if(etPlusFlag) emoticonPlus++
-            else sumPrice += price
-        })
-        if(emoticonPlus > result[0]) {
-            result[0] = emoticonPlus
-            result[1] = sumPrice
-        } else if (result[0] === emoticonPlus && sumPrice > result[1]) {
-            result[1] = sumPrice
-        }
-    })
-    return result
+  }
+  DFS(0, []);
+
+  cases.forEach((rate) => {
+    let [emoticonPlus, sumPrice] = [0, 0];
+
+    for (const user of users) {
+      const [userRate, d] = user;
+      const ratedPrices = emoticons.reduce((acc, curr, idx) => {
+        if (rate[idx] >= userRate) return acc + curr * (1 - rate[idx] * 0.01);
+        return acc;
+      }, 0);
+
+      if (ratedPrices >= d) emoticonPlus++;
+      else sumPrice += ratedPrices;
+    }
+
+    if (emoticonPlus > result[0]) result = [emoticonPlus, sumPrice];
+    else if (emoticonPlus === result[0] && sumPrice >= result[1])
+      result = [emoticonPlus, sumPrice];
+  });
+
+  return result;
 }
