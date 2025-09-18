@@ -1,18 +1,14 @@
-const input = require('fs').readFileSync(process.platform === "linux" ? "/dev/stdin" : "./test.txt").toString().trim().split('\n');
-const N = +input[0];
-const distance = input[1].split(' ').map(Number);
-const price = input[2].split(' ').map(Number);
+const input = require("fs").readFileSync("/dev/stdin").toString().trim().split("\n");
+const n = +input[0];
+const distance = input[1].split(" ").map(v => BigInt(v));
+const price = input[2].split(" ").map(v => BigInt(v));
 
-function solution(){
-  let answer = 0;
-  let min_price = Infinity;
+let curPrice = price[0];
+let cost = 0n;
 
-  for(let i=0;i<N-1;i++){
-    min_price = Math.min(min_price, price[i]);
-    answer += min_price * distance[i];
-  }
-
-  console.log(answer);
+for (let i=0; i<n-1; i++) {
+    cost += curPrice * distance[i];
+    if (curPrice > price[i+1]) curPrice = price[i+1];
 }
 
-solution();
+console.log(String(cost));
