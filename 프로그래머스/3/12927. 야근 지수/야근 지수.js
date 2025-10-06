@@ -1,5 +1,4 @@
 function solution(n, works) {
-    let answer = 0;
     let max = Math.max(...works);
     const arr = Array(max).fill(0);
     
@@ -15,9 +14,5 @@ function solution(n, works) {
         }
     }
     
-    for(let i=0;i<arr.length;i++){
-        if(arr[i]) answer += (i+1)**2 * arr[i];
-    }
-    
-    return answer;
+    return arr.reduce((acc,cur,idx) => acc + (idx+1)**2 * cur, 0);
 }
