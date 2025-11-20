@@ -19,42 +19,20 @@ function solution(){
     }
   })
 
-  let order = 1;
-  let preOrder = -1;
-  let idx = 0;
+  for(let i=0;i<N;i++){
+    const [n1,g1,s1,b1] = sorted[i];
 
-  while(idx <= K){
-    const [n, g, s, b] = sorted[idx];
-
-    if(idx === N-1){
-      obj[n] = order; 
-      break; 
+    if(i === 0){
+      obj[n1] = 1;
+      continue;
     }
 
-    const [n2, g2, s2, b2] = sorted[idx+1];
+    const [n,g,s,b] = sorted[i-1];
 
-    if(g !== g2 || s !== s2 || b !== b2){
-      if(preOrder !== -1){
-        obj[n] = preOrder;
-        preOrder = -1;
-      }else{
-        obj[n] = order;
-        order++;
-      }
-    }else if(g === g2 && s === s2 && b === b2){
-      if(preOrder !== -1){
-        obj[n] = preOrder;
-      }else{
-        obj[n] = order;
-        preOrder = order;
-      }
-      order++;
-    }
-
-    idx++;
+    obj[n1] = g === g1 && s === s1 && b === b1 ? obj[n] : i+1;
   }
 
-  console.log(obj[K])
+  console.log(obj[K]);
 }
 
 solution();
