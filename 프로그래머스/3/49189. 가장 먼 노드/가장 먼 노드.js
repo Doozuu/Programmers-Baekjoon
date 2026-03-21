@@ -1,8 +1,9 @@
 function solution(n, edge) {
     const graph = Array.from({length: n+1}, () => []);
-    const visited = Array.from({length : n+1}, () => false);
-    const distance = Array(n+1).fill(0);
-    const queue = [[1,0]];
+    const distance = Array(n+1).fill(-1);
+    const queue = [1];
+    
+    distance[1] = 0;
     
     for(let [s, e] of edge){
         graph[s].push(e)
@@ -10,19 +11,16 @@ function solution(n, edge) {
     }
     
     while(queue.length){
-        const [node, dist] = queue.shift();
-        
-        if(visited[node]) continue;
-        
-        visited[node] = true;
-        distance[node] = dist;
+        const node = queue.shift();
         
         for(let nextNode of graph[node]){
-            queue.push([nextNode, dist+1]);
+            if(distance[nextNode] !== -1) continue;
+            distance[nextNode] = distance[node] + 1;
+            queue.push(nextNode);
         }
     }
     
-    const MAX = Math.max(...distance)
+    const MAX = Math.max(...distance);
     
     return distance.filter((d) => d === MAX).length;
 }
