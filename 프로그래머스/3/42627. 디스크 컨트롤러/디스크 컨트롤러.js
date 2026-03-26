@@ -7,26 +7,18 @@ function solution(jobs) {
     const queue = [];
     const heap = [];
     
-    const jobs_with_number = jobs.map((j,i) => [i, j[0], j[1]]).sort((a,b) => a[1] - b[1]);
+    jobs.sort((a,b) => a[0] - b[0]);
     
     while(cnt < N){
         // 요청 시간 된 거 대기 큐에 추가
-        while(idx < jobs.length){
-            const [num, request_time, duration] = jobs_with_number[idx];
+        while(idx < N){
+            const [request_time, duration] = jobs[idx];
             
             if(request_time === time){
-                queue.push([num, request_time, duration]);
+                queue.push([request_time, duration]);
                 // 우선순위대로 정렬
                 if(queue.length > 1){
-                    queue.sort((a,b) => {
-                        if(a[2] !== b[2]){
-                            return a[2] - b[2]
-                        }else if(a[1] !== b[1]){
-                            return a[1] - b[1]
-                        }else{
-                            return a[0] - b[0]
-                        }
-                    })
+                    queue.sort((a,b) => a[1] !== b[1] ? a[1] - b[1] : a[0] - b[0])
                 }
                 idx++;
             }else{
@@ -35,8 +27,8 @@ function solution(jobs) {
         }
         
         // 소요시간 끝나면 제거
-        if(heap.length > 0 && heap[0][2] === 0){
-            const [num, request_time, duration] = heap.pop();
+        if(heap.length > 0 && heap[0][1] === 0){
+            const [request_time, duration] = heap.pop();
             // 반환 시간 구하기
             answer += time - request_time
             cnt++
@@ -48,7 +40,7 @@ function solution(jobs) {
         }
         
         // 소요시간 줄이기
-        if(heap.length > 0) heap[0][2]--;
+        if(heap.length > 0) heap[0][1]--;
             
         time++;
     }
