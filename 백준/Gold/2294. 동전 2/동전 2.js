@@ -5,16 +5,14 @@ const input = fs
   .trim()
   .split("\n");
 const [N, K] = input[0].split(" ").map(Number);
-const coins = input.slice(1).map(Number);
 const dp = Array(K + 1).fill(Infinity);
-
 dp[0] = 0;
 
-for (let i = 1; i <= K; i++) {
-  for (let j = 0; j < N; j++) {
-    if (i >= coins[j]) {
-      dp[i] = Math.min(dp[i], dp[i - coins[j]] + 1);
-    }
+for (let i = 1; i <= N; i++) {
+  const coin = +input[i];
+
+  for (let j = coin; j <= K; j++) {
+    dp[j] = Math.min(dp[j], dp[j - coin] + 1);
   }
 }
 
